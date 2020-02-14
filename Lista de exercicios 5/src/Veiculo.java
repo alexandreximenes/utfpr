@@ -4,6 +4,7 @@
 
 public abstract class Veiculo {
 
+    private Integer id;
     private String placa;
     private String marca;
     private String modelo;
@@ -23,6 +24,14 @@ public abstract class Veiculo {
         this.qtdeDeRodas = qtdeDeRodas;
         this.velocMax = velocMax;
         this.motor = motor;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getPlaca() {
@@ -65,13 +74,14 @@ public abstract class Veiculo {
         this.qtdeDeRodas = qtdeDeRodas;
     }
 
-    public int getVelocMax() {
-        return velocMax;
-    }
+    public abstract int getVelocMax();
 
-    public void setVelocMax(int velocMax) {
+    public void setVelocMax(int velocMax) throws VelocException{
+        if(velocMax < 100 || velocMax > 250){
+            throw new VelocException("A velocidade máxima está fora dos limites brasileiros");
+        }
         this.velocMax = velocMax;
-    }
+    };
 
     public Motor getMotor() {
         return motor;
@@ -83,14 +93,13 @@ public abstract class Veiculo {
 
     @Override
     public String toString() {
-        return "Veiculo" +
+        return "----------------------------------" +
+                "\nVeiculo" +
                 "\nplaca:"  + placa +
                 "\nmarca: " + marca +
                 "\nmodelo: " + modelo +
                 "\ncor: " + cor +
                 "\nQuantidade de rodas: " + qtdeDeRodas +
-                "\nvelocidade Maxima: " + velocMax +
-                "\nmotor: " + motor +
-                '}';
+                "\n" +motor;
     }
 }

@@ -30,7 +30,7 @@ public class Motor {
 
     @Override
     public String toString() {
-        return "\nQuatidade de Pistoes: " + qtdPistoes +
-                "\npotencia: " + potencia;
+        return "\nQuatidade de Pistoes do motor: " + qtdPistoes +
+                "\npotencia do motor: " + potencia;
     }
 }

@@ -2,10 +2,13 @@
  * Alexandre Tiago Ximenes
  */
 
-public class Carga extends Veiculo implements Calc{
+public final class Carga extends Veiculo implements Calc{
 
     private int tara;
     private int cargaMax;
+
+    public Carga() {
+    }
 
     public Carga(String placa, String marca, String modelo, String cor, int qtdeDeRodas, int velocMax, Motor motor, int tara, int cargaMax) {
         super(placa, marca, modelo, cor, qtdeDeRodas, velocMax, motor);
@@ -35,15 +38,20 @@ public class Carga extends Veiculo implements Calc{
     }
 
     @Override
-    public double calcular() {
-        return 0;
+    public int getVelocMax() {
+        return calcular(this.getVelocMax());
     }
-
 
     @Override
     public String toString() {
         return super.toString() +
                 "\nTara: " + tara +
-                "\nCarga Maxima: "+cargaMax;
+                "\nCarga Maxima: "+cargaMax +
+                "\nVelocidade Maxima: " + this.getVelocMax();
+    }
+
+    @Override
+    public int calcular(int veloMax) {
+        return veloMax * 100_000;
     }
 }

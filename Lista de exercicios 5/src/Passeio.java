@@ -2,11 +2,30 @@
  * Alexandre Tiago Ximenes
  */
 
-public class Passeio extends Veiculo implements Calc{
+public final class Passeio extends Veiculo implements Calc {
 
     private int qtdeDePassageiros;
 
-    public Passeio(){}
+    public Passeio() {
+    }
+
+    @Override
+    public int getVelocMax() {
+        return calcular(this.getVelocMax());
+    }
+
+    @Override
+    public void setVelocMax(int velocMax) {
+        try {
+            super.setVelocMax(velocMax);
+        } catch (VelocException e) {
+            System.out.println(e.getMessage());
+            this.setVelocMax(150);
+            System.out.println("Velocidade padrão: "+this.getVelocMax());
+        }
+
+    }
+
     public Passeio(String placa, String marca, String modelo, String cor, int qtdeDeRodas, int velocMax, Motor motor, int qtdeDePassageiros) {
         super(placa, marca, modelo, cor, qtdeDeRodas, velocMax, motor);
         this.qtdeDePassageiros = qtdeDePassageiros;
@@ -25,14 +44,15 @@ public class Passeio extends Veiculo implements Calc{
 
     }
 
-
     @Override
-    public double calcular() {
-        return 0;
+    public String toString() {
+        return super.toString()
+                + "\nQtde de Passageiros: " + qtdeDePassageiros
+                + "\nVelocidade Maxima: " + this.getVelocMax();
     }
 
     @Override
-    public String toString() {
-        return super.toString() + "\nQtde de Passageiros: " + qtdeDePassageiros;
+    public int calcular(int veloMax) {
+        return veloMax * 1_000;
     }
 }

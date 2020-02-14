@@ -1,3 +1,6 @@
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+
 /**
  * Alexandre Tiago Ximenes
  */
@@ -8,27 +11,14 @@ public class Teste {
     static String escolha;
     static Leitura leitura = new Leitura();
     static String resposta = null;
-    static boolean atualizar = false;
-    static boolean cadastrar = false;
-    static boolean cadastrarDoMesmoTipo = false;
-
 
     public static void main(String[] args) {
 
         System.out.println("Sistema de gestão de veiculos - Menu inicial");
 
         do {
-            System.out.println();
-            System.out.println("1)_ Cadastrar Veículo de Passeio");
-            System.out.println("2)_ Cadastrar Veículo de Carga");
-            System.out.println("3)_ Imprimir Todos os Veículos de Passeio");
-            System.out.println("4)_ Imprimir Todos os Veículos de Carga");
-            System.out.println("5)_ Imprimir Veículo de Passeio pela Placa");
-            System.out.println("6)_ Imprimir Veículo de Carga pela Placa");
-            System.out.println("7)_ Alterar dados do Veículo de Passeio pela Placa");
-            System.out.println("8)_ Alterar dados do Veículo de Carga pela Placa");
-            System.out.println("9)_ Sair do Sistema");
 
+            menuSistema();
             escolha = leitura.entraDados();
 
             switch (escolha) {
@@ -51,43 +41,80 @@ public class Teste {
                     imprimirVeiculosDeCargaPelaPlaca();
                     break;
                 case "7":
-                    alterarDadosDoveiculoDePasseioPelaPlaca();
+                    System.out.println("Informe a placa: ");
+                    String placa = leitura.entraDados();
+                    Passeio passeio = new Passeio();
+                    passeio.setPlaca(placa);
+                    alterarDadosDoveiculoDePasseioPelaPlaca(passeio);
                     break;
                 case "8":
                     alterarDadosDoveiculoDeCargaPelaPlaca();
                     break;
-                default:
-                    escolha = "";
             }
 
         } while (!escolha.equals("9"));
         System.out.println("Finalizou o programa");
     }
 
+    private static void menuSistema() {
+        System.out.println();
+        System.out.println("1)_ Cadastrar Veículo de Passeio");
+        System.out.println("2)_ Cadastrar Veículo de Carga");
+        System.out.println("3)_ Imprimir Todos os Veículos de Passeio");
+        System.out.println("4)_ Imprimir Todos os Veículos de Carga");
+        System.out.println("5)_ Imprimir Veículo de Passeio pela Placa");
+        System.out.println("6)_ Imprimir Veículo de Carga pela Placa");
+        System.out.println("7)_ Alterar dados do Veículo de Passeio pela Placa");
+        System.out.println("8)_ Alterar dados do Veículo de Carga pela Placa");
+        System.out.println("9)_ Sair do Sistema");
+    }
+
     private static void alterarDadosDoveiculoDeCargaPelaPlaca() {
         System.out.println("# Voce escolheu alterar veiculo de carga pela placa");
     }
 
-    private static void alterarDadosDoveiculoDePasseioPelaPlaca() {
+    private static void alterarDadosDoveiculoDePasseioPelaPlaca(Passeio passeio) {
         System.out.println("# Voce escolheu alterar veiculo de passeio pela placa");
+        Passeio passeioRecuperado = bdVeiculos.buscaVeiculoPasseioPelaPlaca(passeio);
+
+
+
     }
 
     private static void imprimirVeiculosDeCargaPelaPlaca() {
         System.out.println("# Imprimindo veiculo de carga pela placa");
+        System.out.println("Informe a placa: ");
+        String placa = leitura.entraDados();
+        Carga carga = new Carga();
+        carga.setPlaca(placa);
+        carga = bdVeiculos.buscaVeiculoCargaPelaPlaca(carga);
+        if(nonNull(carga)){
+            System.out.println(carga);
+        }else{
+            System.out.println("# Veiculo não encontrado");
+        }
 
     }
 
     private static void imprimirVeiculosDePasseioPelaPlaca() {
         System.out.println("# Imprimindo veiculo de passeio pela placa");
+        System.out.println("Informe a placa: ");
+        String placa = leitura.entraDados();
+        Passeio passeio = new Passeio();
+        passeio.setPlaca(placa);
+        passeio = bdVeiculos.buscaVeiculoPasseioPelaPlaca(passeio);
+        if(nonNull(passeio)){
+            System.out.println(passeio);
+        }else{
+            System.out.println("# Veiculo não encontrado");
+        }
     }
 
     private static void imprimirTodosVeiculosDeCarga() {
-        System.out.println("# Imprimindo todos os veiculos de carga");
         bdVeiculos.imprimeVeiculosDeCarga();
     }
 
     private static void imprimirTodosVeiculosDePasseio() {
-        System.out.println("# Imprimindo todos os veiculos de passeio");
         bdVeiculos.imprimeVeiculosDePasseio();
     }
 
@@ -97,58 +124,71 @@ public class Teste {
 
     private static void cadastrarVeiculoDePasseio() {
 
-        Passeio passeio = new Passeio();
-
         System.out.println("# Você escolheu cadastrar veiculo de passeio");
 
         System.out.println("Informe a placa: ");
         String placa = leitura.entraDados();
 
-        int indexVeiculoPasseio = bdVeiculos.buscaVeiculoPasseioPelaPlaca(resposta);
+        try {
 
-        if (indexVeiculoPasseio >= 0) {
-            System.out.println("Veiculo com a placa " + resposta + " já foi cadastrado.");
-            do {
-                System.out.println("Você quer sobrescrever o veiculo? [s/n]");
-                resposta = leitura.entraDados();
-                if (resposta.equalsIgnoreCase("s") || resposta.equalsIgnoreCase("sim")) {
+            //Caso não existe veiculo cadastrado com essa placa
+            if (!bdVeiculos.existeVeiculoComA(placa)) {
 
-                    atualizar = true;
-                    cadastrar = false;
+                Passeio passeio = new Passeio();
+                passeio = cadastrarOuAtualizarDados(passeio, placa);
+                save(passeio);
+            }
 
-                } else if (resposta.equalsIgnoreCase("n") || resposta.equalsIgnoreCase("nao") || resposta.equalsIgnoreCase("não")) {
+        } catch (VeicExistException e) {
+            System.out.println(e.getMessage());
 
-                    System.out.println("Deseja cadastrar o veiculo do mesmo tipo? [s/n]");
-                    resposta = leitura.entraDados();
-                    passeio.setPlaca(placa);
+            System.out.println("Você quer sobrescrever o veiculo? [s/n]");
+            resposta = leitura.entraDados();
+            if (resposta.equalsIgnoreCase("s") || resposta.equalsIgnoreCase("sim")) {
+                Passeio passeio = new Passeio();
+                passeio.setPlaca(placa);
+                alterarDadosDoveiculoDePasseioPelaPlaca(passeio);
+            } else {
+                cadastrarVeiculoDoMesmoTipo(placa);
+            }
+        }
+    }
 
-                    if (resposta.equalsIgnoreCase("s") || resposta.equalsIgnoreCase("sim")) {
-
-                        atualizar = false;
-                        cadastrar = true;
-
-                        Passeio veiculoRecuperadoPeloIndice = bdVeiculos.buscaVeiculoPasseioPeloIndice(indexVeiculoPasseio);
-                        passeio.setModelo(veiculoRecuperadoPeloIndice.getModelo());
-
-                    }else{
-                        atualizar = false;
-                        cadastrar = true;
-                        cadastrarDoMesmoTipo = false;
-                    }
+    private static void cadastrarVeiculoDoMesmoTipo(String placa) {
+        String resposta = "n";
+        do {
+            System.out.println("Deseja cadastrar o veiculo do mesmo tipo? [s/n]");
+            resposta = leitura.entraDados();
+            if (resposta.equalsIgnoreCase("s") || resposta.equalsIgnoreCase("sim")) {
+                Passeio passeio = new Passeio();
+                passeio.setPlaca(placa);
+                passeio = bdVeiculos.buscaVeiculoPasseioPelaPlaca(passeio);
+                if (nonNull(passeio)) {
+                    passeio = cadastrarOuAtualizarDados(passeio, placa);
+                    save(passeio);
                 }
+            }
+        } while (!resposta.equalsIgnoreCase("n") || resposta.equalsIgnoreCase("nao") || resposta.equalsIgnoreCase("não"));
+    }
 
-            } while ((!resposta.equalsIgnoreCase("s") || !resposta.equalsIgnoreCase("n") || !resposta.equalsIgnoreCase("sim") || !resposta.equalsIgnoreCase("nao") || !resposta.equalsIgnoreCase("não")));
+    private static void save(Passeio passeio) {
+        try {
+            bdVeiculos.save(passeio);
+        } catch (VeicExisException e) {
+            System.out.println("Veiculo placa: " + passeio.getPlaca() + " ja existe");
         }
+    }
 
-        if (placa != null) {
+    private static Passeio cadastrarOuAtualizarDados(Passeio passeio, String placa) {
+
+        if (nonNull(placa))
             passeio.setPlaca(placa);
-        }
 
         System.out.println("Informe a marca: ");
         resposta = leitura.entraDados();
         passeio.setMarca(resposta);
 
-        if(passeio.getModelo() == null){
+        if (isNull(passeio.getModelo())) {
             System.out.println("Informe a modelo: ");
             resposta = leitura.entraDados();
             passeio.setModelo(resposta);
@@ -158,26 +198,30 @@ public class Teste {
         resposta = leitura.entraDados();
         passeio.setCor(resposta);
 
+        System.out.println("Informe a quantidade de passageiros: ");
+        resposta = leitura.entraDados();
+        int qtdPassageiros = parseStringToInteger(resposta);
+        passeio.setQtdeDePassageiros(qtdPassageiros);
+
         System.out.println("Informe a quantidade de rodas: ");
         resposta = leitura.entraDados();
         int qtdePneus = parseStringToInteger(resposta);
         passeio.setQtdeDeRodas(qtdePneus);
 
-        System.out.println("Informe a velocidade maxima: ");
+        System.out.println("Informe a velocidade maxima em Km/h: ");
         resposta = leitura.entraDados();
         int velMax = parseStringToInteger(resposta);
         passeio.setVelocMax(velMax);
 
-        if(cadastrar){
-            try {
-                bdVeiculos.addPasseio(passeio);
-            } catch (VeicExisException e) {
-                System.out.println("Veiculo placa: " + passeio.getPlaca() + " ja existe");
-            }
-        }else if(atualizar){
-            bdVeiculos.addPasseio(indexVeiculoPasseio, passeio);
-        }
+        System.out.println("Informe a quantidade de pistões do motor: ");
+        resposta = leitura.entraDados();
+        int qtdPistoes = parseStringToInteger(resposta);
+        System.out.println("Informe a potência do motor: ");
+        resposta = leitura.entraDados();
+        int potencia = parseStringToInteger(resposta);
+        passeio.setMotor(new Motor(qtdPistoes, potencia));
 
+        return passeio;
     }
 
 

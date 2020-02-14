@@ -1,6 +1,8 @@
 import java.util.LinkedList;
 import java.util.List;
 
+import static java.util.Objects.nonNull;
+
 /**
  * Alexandre Tiago Ximenes
  */
@@ -18,15 +20,15 @@ public class BDVeiculos {
         BDVeiculos.veiculosDePasseio = veiculosDePasseio;
     }
 
-    public void addPasseio(Passeio passeio) throws VeicExisException {
+    public void save(Passeio passeio) throws VeicExisException {
         if (veiculosDePasseio.contains(passeio))
-            throw new VeicExisException("Veiculo já foi cadastrado");
+            throw new VeicExisException("Veiculo de passeio já foi cadastrado");
         veiculosDePasseio.add(passeio);
     }
 
-    public void addCarga(Carga carga) throws VeicExisException {
+    public void save(Carga carga) throws VeicExisException {
         if (veiculosDeCarga.contains(carga))
-            throw new VeicExisException("Veiculo já foi cadastrado");
+            throw new VeicExisException("Veiculo de carga já foi cadastrado");
         veiculosDeCarga.add(carga);
     }
 
@@ -41,6 +43,7 @@ public class BDVeiculos {
 
     public void imprimeVeiculosDePasseio() {
         if (veiculosDePasseio.size() > 0){
+            System.out.println("# Imprimindo todos os veiculos de passeio");
             veiculosDePasseio.stream().forEach(System.out::println);
         }else{
             System.out.println("# Não existe veiculo de passeio cadastrado");
@@ -49,31 +52,54 @@ public class BDVeiculos {
 
     public void imprimeVeiculosDeCarga() {
         if (veiculosDeCarga.size() > 0) {
+            System.out.println("# Imprimindo todos os veiculos de carga");
             veiculosDeCarga.stream().forEach(System.out::println);
         } else {
             System.out.println("# Não existe veiculo de carga cadastrado");
         }
     }
 
-    public int buscaVeiculoPasseioPelaPlaca(String placa) {
-        int index = 0;
-        if(veiculosDePasseio.size() > 0){
+    public Passeio buscaVeiculoPasseioPelaPlaca(Passeio passeio) {
+        if(veiculosDePasseio.size() > 0 && nonNull(passeio) && nonNull(passeio.getPlaca())){
             for (int i = 0 ; i < veiculosDePasseio.size(); i++){
-                if(veiculosDePasseio.get(i).getPlaca().equalsIgnoreCase(placa)){
-                    index = veiculosDePasseio.indexOf(i);
+                if(veiculosDePasseio.get(i).getPlaca().equalsIgnoreCase(passeio.getPlaca())){
+                    passeio = veiculosDePasseio.get(i);
+                    passeio.setId(veiculosDePasseio.indexOf(i));
                 }
             }
-        }else {
-            return -1;
         }
-        return index;
+        return null;
     }
 
-    public void addPasseio(int indexVeiculoPasseio, Passeio passeio) {
+
+    public Carga buscaVeiculoCargaPelaPlaca(Carga carga) {
+        if(veiculosDeCarga.size() > 0 && nonNull(carga) && nonNull(carga.getPlaca())){
+            for (int i = 0 ; i < veiculosDeCarga.size(); i++){
+                if(veiculosDeCarga.get(i).getPlaca().equalsIgnoreCase(carga.getPlaca())){
+                    carga = veiculosDeCarga.get(i);
+                    carga.setId(veiculosDeCarga.indexOf(i));
+                }
+            }
+        }
+        return null;
+    }
+    public boolean existeVeiculoComA(String placa) throws VeicExistException {
+        if(veiculosDePasseio.size() > 0 && nonNull(placa)){
+            for (int i = 0 ; i < veiculosDePasseio.size(); i++){
+                if(veiculosDePasseio.get(i).getPlaca().equalsIgnoreCase(placa)){
+                    throw new VeicExistException("Veiculo com a Placa ("+placa+") já foi cadastrado");
+                }
+            }
+        }
+        return false;
+    }
+
+    public void save(int indexVeiculoPasseio, Passeio passeio) {
         veiculosDePasseio.add(indexVeiculoPasseio, passeio);
     }
 
     public Passeio buscaVeiculoPasseioPeloIndice(int indexVeiculoPasseio) {
         return veiculosDePasseio.get(indexVeiculoPasseio);
     }
+
 }
