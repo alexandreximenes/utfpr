@@ -1,3 +1,5 @@
+import com.sun.org.apache.bcel.internal.generic.RETURN;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -65,6 +67,7 @@ public class BDVeiculos {
                 if(veiculosDePasseio.get(i).getPlaca().equalsIgnoreCase(passeio.getPlaca())){
                     passeio = veiculosDePasseio.get(i);
                     passeio.setId(veiculosDePasseio.indexOf(i));
+                    return passeio;
                 }
             }
         }
@@ -78,15 +81,27 @@ public class BDVeiculos {
                 if(veiculosDeCarga.get(i).getPlaca().equalsIgnoreCase(carga.getPlaca())){
                     carga = veiculosDeCarga.get(i);
                     carga.setId(veiculosDeCarga.indexOf(i));
+                    return carga;
                 }
             }
         }
         return null;
     }
-    public boolean existeVeiculoComA(String placa) throws VeicExistException {
+    public boolean existeVeiculoPasseioComA(String placa) throws VeicExistException {
         if(veiculosDePasseio.size() > 0 && nonNull(placa)){
             for (int i = 0 ; i < veiculosDePasseio.size(); i++){
                 if(veiculosDePasseio.get(i).getPlaca().equalsIgnoreCase(placa)){
+                    throw new VeicExistException("Veiculo com a Placa ("+placa+") já foi cadastrado");
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean existeVeiculoCargaComA(String placa) throws VeicExistException {
+        if(veiculosDeCarga.size() > 0 && nonNull(placa)){
+            for (int i = 0 ; i < veiculosDeCarga.size(); i++){
+                if(veiculosDeCarga.get(i).getPlaca().equalsIgnoreCase(placa)){
                     throw new VeicExistException("Veiculo com a Placa ("+placa+") já foi cadastrado");
                 }
             }

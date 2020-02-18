@@ -120,6 +120,33 @@ public class Teste {
 
     private static void cadastrarVeiculoDeCarga() {
         System.out.println("# Você escolheu cadastrar veiculo de carga");
+
+        System.out.println("Informe a placa: ");
+        String placa = leitura.entraDados();
+
+        try {
+
+            //Caso não existe veiculo cadastrado com essa placa
+            if (!bdVeiculos.existeVeiculoCargaComA(placa)) {
+
+                Carga carga = new Carga();
+                carga = cadastrarOuAtualizarDados(carga, placa);
+                save(carga);
+            }
+
+        } catch (VeicExistException e) {
+            System.out.println(e.getMessage());
+
+            System.out.println("Você quer sobrescrever o veiculo? [s/n]");
+            resposta = leitura.entraDados();
+            if (resposta.equalsIgnoreCase("s") || resposta.equalsIgnoreCase("sim")) {
+                Passeio passeio = new Passeio();
+                passeio.setPlaca(placa);
+                alterarDadosDoveiculoDePasseioPelaPlaca(passeio);
+            } else {
+                cadastrarVeiculoDoMesmoTipo(placa);
+            }
+        }
     }
 
     private static void cadastrarVeiculoDePasseio() {
@@ -132,7 +159,7 @@ public class Teste {
         try {
 
             //Caso não existe veiculo cadastrado com essa placa
-            if (!bdVeiculos.existeVeiculoComA(placa)) {
+            if (!bdVeiculos.existeVeiculoPasseioComA(placa)) {
 
                 Passeio passeio = new Passeio();
                 passeio = cadastrarOuAtualizarDados(passeio, placa);
@@ -179,6 +206,14 @@ public class Teste {
         }
     }
 
+    private static void save(Carga carga) {
+        try {
+            bdVeiculos.save(carga);
+        } catch (VeicExisException e) {
+            System.out.println("Veiculo placa: " + carga.getPlaca() + " ja existe");
+        }
+    }
+
     private static Passeio cadastrarOuAtualizarDados(Passeio passeio, String placa) {
 
         if (nonNull(placa))
@@ -222,6 +257,51 @@ public class Teste {
         passeio.setMotor(new Motor(qtdPistoes, potencia));
 
         return passeio;
+    }
+
+    private static Carga cadastrarOuAtualizarDados(Carga carga, String placa) {
+
+        if (nonNull(placa))
+            carga.setPlaca(placa);
+
+        System.out.println("Informe a marca: ");
+        resposta = leitura.entraDados();
+        carga.setMarca(resposta);
+
+        if (isNull(carga.getModelo())) {
+            System.out.println("Informe a modelo: ");
+            resposta = leitura.entraDados();
+            carga.setModelo(resposta);
+        }
+
+        System.out.println("Informe a cor: ");
+        resposta = leitura.entraDados();
+        carga.setCor(resposta);
+
+        System.out.println("Informe a quantidade de passageiros: ");
+        resposta = leitura.entraDados();
+        int qtdPassageiros = parseStringToInteger(resposta);
+//        carga.setQtdeDePassageiros(qtdPassageiros);
+
+        System.out.println("Informe a quantidade de rodas: ");
+        resposta = leitura.entraDados();
+        int qtdePneus = parseStringToInteger(resposta);
+        carga.setQtdeDeRodas(qtdePneus);
+
+        System.out.println("Informe a velocidade maxima em Km/h: ");
+        resposta = leitura.entraDados();
+        int velMax = parseStringToInteger(resposta);
+//        carga.setVelocMax(velMax);
+
+        System.out.println("Informe a quantidade de pistões do motor: ");
+        resposta = leitura.entraDados();
+        int qtdPistoes = parseStringToInteger(resposta);
+        System.out.println("Informe a potência do motor: ");
+        resposta = leitura.entraDados();
+        int potencia = parseStringToInteger(resposta);
+        carga.setMotor(new Motor(qtdPistoes, potencia));
+
+        return carga;
     }
 
 

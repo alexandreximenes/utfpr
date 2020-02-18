@@ -11,7 +11,7 @@ public final class Passeio extends Veiculo implements Calc {
 
     @Override
     public int getVelocMax() {
-        return calcular(this.getVelocMax());
+        return calcular(super.getVelocMax());
     }
 
     @Override
@@ -48,7 +48,7 @@ public final class Passeio extends Veiculo implements Calc {
     public String toString() {
         return super.toString()
                 + "\nQtde de Passageiros: " + qtdeDePassageiros
-                + "\nVelocidade Maxima: " + this.getVelocMax();
+                + "\nVelocidade Maxima: " + this.getVelocMax() + " M/h";
     }
 
     @Override

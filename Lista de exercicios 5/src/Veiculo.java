@@ -74,7 +74,9 @@ public abstract class Veiculo {
         this.qtdeDeRodas = qtdeDeRodas;
     }
 
-    public abstract int getVelocMax();
+    public int getVelocMax(){
+        return this.velocMax;
+    }
 
     public void setVelocMax(int velocMax) throws VelocException{
         if(velocMax < 100 || velocMax > 250){
