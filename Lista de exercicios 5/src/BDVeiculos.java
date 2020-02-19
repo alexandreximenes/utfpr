@@ -1,5 +1,3 @@
-import com.sun.org.apache.bcel.internal.generic.RETURN;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -66,7 +64,7 @@ public class BDVeiculos {
             for (int i = 0 ; i < veiculosDePasseio.size(); i++){
                 if(veiculosDePasseio.get(i).getPlaca().equalsIgnoreCase(passeio.getPlaca())){
                     passeio = veiculosDePasseio.get(i);
-                    passeio.setId(veiculosDePasseio.indexOf(i));
+                    passeio.setId(i);
                     return passeio;
                 }
             }
@@ -80,7 +78,7 @@ public class BDVeiculos {
             for (int i = 0 ; i < veiculosDeCarga.size(); i++){
                 if(veiculosDeCarga.get(i).getPlaca().equalsIgnoreCase(carga.getPlaca())){
                     carga = veiculosDeCarga.get(i);
-                    carga.setId(veiculosDeCarga.indexOf(i));
+                    carga.setId(i);
                     return carga;
                 }
             }
@@ -109,12 +107,10 @@ public class BDVeiculos {
         return false;
     }
 
+    public void save(int indexVeiculoPasseio, Carga carga) {
+        veiculosDeCarga.add(indexVeiculoPasseio, carga);
+    }
     public void save(int indexVeiculoPasseio, Passeio passeio) {
         veiculosDePasseio.add(indexVeiculoPasseio, passeio);
     }
-
-    public Passeio buscaVeiculoPasseioPeloIndice(int indexVeiculoPasseio) {
-        return veiculosDePasseio.get(indexVeiculoPasseio);
-    }
-
 }

@@ -14,6 +14,15 @@ public class Teste {
 
     public static void main(String[] args) {
 
+        Passeio p = new Passeio("CCC-333", "VW", "GOL", "BRANCO", 4, 260, new Motor(2, 220), 5);
+        Carga c = new Carga("AAA-111", "VW", "Caminhao VW", "PRETO", 6, 280, new Motor(4, 400), 100, 1_000);
+        try {
+            bdVeiculos.save(p);
+            bdVeiculos.save(c);
+        } catch (VeicExisException e) {
+            e.printStackTrace();
+        }
+
         System.out.println("Sistema de gestão de veiculos - Menu inicial");
 
         do {
@@ -41,6 +50,7 @@ public class Teste {
                     imprimirVeiculosDeCargaPelaPlaca();
                     break;
                 case "7":
+                    System.out.println("# Voce escolheu alterar veiculo de passeio pela placa");
                     System.out.println("Informe a placa: ");
                     String placa = leitura.entraDados();
                     Passeio passeio = new Passeio();
@@ -48,7 +58,12 @@ public class Teste {
                     alterarDadosDoveiculoDePasseioPelaPlaca(passeio);
                     break;
                 case "8":
-                    alterarDadosDoveiculoDeCargaPelaPlaca();
+                    System.out.println("# Voce escolheu alterar veiculo de carga pela placa");
+                    System.out.println("Informe a placa: ");
+                    placa = leitura.entraDados();
+                    Carga carga = new Carga();
+                    carga.setPlaca(placa);
+                    alterarDadosDoveiculoDeCargaPelaPlaca(carga);
                     break;
             }
 
@@ -69,16 +84,119 @@ public class Teste {
         System.out.println("9)_ Sair do Sistema");
     }
 
-    private static void alterarDadosDoveiculoDeCargaPelaPlaca() {
-        System.out.println("# Voce escolheu alterar veiculo de carga pela placa");
+    private static void alterarDadosDoveiculoDeCargaPelaPlaca(Carga carga) {
+        Carga cargaRecuperado = bdVeiculos.buscaVeiculoCargaPelaPlaca(carga);
+        if (nonNull(cargaRecuperado)) {
+            System.out.println(cargaRecuperado);
+            System.out.println("Deseja alterar os dados do veiculo [s/n]?");
+            String resposta = leitura.entraDados();
+            if (resposta.equalsIgnoreCase("s") || resposta.equalsIgnoreCase("sim")) {
+                carga = alterarDadosDoveiculoDeCarga(cargaRecuperado);
+                bdVeiculos.save(carga.getId(), carga);
+            }
+        } else {
+            System.out.println("Veiculo com a placa " + cargaRecuperado.getPlaca() + " não foi encontrado");
+        }
+    }
+
+    private static Carga alterarDadosDoveiculoDeCarga(Carga carga) {
+
+        System.out.println("Informe a marca: ");
+        resposta = leitura.entraDados();
+        carga.setMarca(resposta);
+
+        System.out.println("Informe a modelo: ");
+        resposta = leitura.entraDados();
+        carga.setModelo(resposta);
+
+
+        System.out.println("Informe a cor: ");
+        resposta = leitura.entraDados();
+        carga.setCor(resposta);
+
+        System.out.println("Informe a tara: ");
+        resposta = leitura.entraDados();
+        int tara = parseStringToInteger(resposta);
+        carga.setTara(tara);
+
+        System.out.println("Informe a carga maxima: ");
+        resposta = leitura.entraDados();
+        int cargaMax = parseStringToInteger(resposta);
+        carga.setCargaMax(cargaMax);
+
+        System.out.println("Informe a quantidade de rodas: ");
+        resposta = leitura.entraDados();
+        int qtdePneus = parseStringToInteger(resposta);
+        carga.setQtdeDeRodas(qtdePneus);
+
+        System.out.println("Informe a velocidade maxima em Km/h: ");
+        resposta = leitura.entraDados();
+        int velMax = parseStringToInteger(resposta);
+        carga.setVelocMax(velMax);
+
+        System.out.println("Informe a quantidade de pistões do motor: ");
+        resposta = leitura.entraDados();
+        int qtdPistoes = parseStringToInteger(resposta);
+        System.out.println("Informe a potência do motor: ");
+        resposta = leitura.entraDados();
+        int potencia = parseStringToInteger(resposta);
+        carga.setMotor(new Motor(qtdPistoes, potencia));
+
+        return carga;
     }
 
     private static void alterarDadosDoveiculoDePasseioPelaPlaca(Passeio passeio) {
-        System.out.println("# Voce escolheu alterar veiculo de passeio pela placa");
         Passeio passeioRecuperado = bdVeiculos.buscaVeiculoPasseioPelaPlaca(passeio);
+        if (nonNull(passeioRecuperado)) {
+            System.out.println(passeioRecuperado);
+            System.out.println("Deseja alterar os dados do veiculo [s/n]?");
+            String resposta = leitura.entraDados();
+            if (resposta.equalsIgnoreCase("s") || resposta.equalsIgnoreCase("sim")) {
+                passeio = alterarDadosDoveiculoDePasseio(passeioRecuperado);
+                bdVeiculos.save(passeio.getId(), passeio);
+            }
+        } else {
+            System.out.println("Veiculo com a placa " + passeio.getPlaca() + " não foi encontrado");
+        }
+    }
 
+    private static Passeio alterarDadosDoveiculoDePasseio(Passeio passeio) {
+        System.out.println("Informe a marca: ");
+        resposta = leitura.entraDados();
+        passeio.setMarca(resposta);
 
+        System.out.println("Informe a modelo: ");
+        resposta = leitura.entraDados();
+        passeio.setModelo(resposta);
 
+        System.out.println("Informe a cor: ");
+        resposta = leitura.entraDados();
+        passeio.setCor(resposta);
+
+        System.out.println("Informe a quantidade de passageiros: ");
+        resposta = leitura.entraDados();
+        int qtdPassageiros = parseStringToInteger(resposta);
+        passeio.setQtdeDePassageiros(qtdPassageiros);
+
+        System.out.println("Informe a quantidade de rodas: ");
+        resposta = leitura.entraDados();
+        int qtdePneus = parseStringToInteger(resposta);
+        passeio.setQtdeDeRodas(qtdePneus);
+
+        System.out.println("Informe a velocidade maxima em Km/h: ");
+        resposta = leitura.entraDados();
+        int velMax = parseStringToInteger(resposta);
+        passeio.setVelocMax(velMax);
+
+        System.out.println("Informe a quantidade de pistões do motor: ");
+        resposta = leitura.entraDados();
+        int qtdPistoes = parseStringToInteger(resposta);
+        System.out.println("Informe a potência do motor: ");
+        resposta = leitura.entraDados();
+        int potencia = parseStringToInteger(resposta);
+        passeio.setMotor(new Motor(qtdPistoes, potencia));
+
+        return passeio;
     }
 
     private static void imprimirVeiculosDeCargaPelaPlaca() {
@@ -88,9 +206,9 @@ public class Teste {
         Carga carga = new Carga();
         carga.setPlaca(placa);
         carga = bdVeiculos.buscaVeiculoCargaPelaPlaca(carga);
-        if(nonNull(carga)){
+        if (nonNull(carga)) {
             System.out.println(carga);
-        }else{
+        } else {
             System.out.println("# Veiculo não encontrado");
         }
 
@@ -103,9 +221,9 @@ public class Teste {
         Passeio passeio = new Passeio();
         passeio.setPlaca(placa);
         passeio = bdVeiculos.buscaVeiculoPasseioPelaPlaca(passeio);
-        if(nonNull(passeio)){
+        if (nonNull(passeio)) {
             System.out.println(passeio);
-        }else{
+        } else {
             System.out.println("# Veiculo não encontrado");
         }
     }
@@ -278,10 +396,15 @@ public class Teste {
         resposta = leitura.entraDados();
         carga.setCor(resposta);
 
-        System.out.println("Informe a quantidade de passageiros: ");
+        System.out.println("Informe a tara: ");
         resposta = leitura.entraDados();
-        int qtdPassageiros = parseStringToInteger(resposta);
-//        carga.setQtdeDePassageiros(qtdPassageiros);
+        int tara = parseStringToInteger(resposta);
+        carga.setTara(tara);
+
+        System.out.println("Informe a carga maxima: ");
+        resposta = leitura.entraDados();
+        int cargaMax = parseStringToInteger(resposta);
+        carga.setCargaMax(cargaMax);
 
         System.out.println("Informe a quantidade de rodas: ");
         resposta = leitura.entraDados();
@@ -291,7 +414,7 @@ public class Teste {
         System.out.println("Informe a velocidade maxima em Km/h: ");
         resposta = leitura.entraDados();
         int velMax = parseStringToInteger(resposta);
-//        carga.setVelocMax(velMax);
+        carga.setVelocMax(velMax);
 
         System.out.println("Informe a quantidade de pistões do motor: ");
         resposta = leitura.entraDados();

@@ -10,7 +10,7 @@ public abstract class Veiculo {
     private String modelo;
     private String cor;
     private int qtdeDeRodas;
-    private int velocMax;
+    private long velocMax;
     private Motor motor;
 
     public abstract void calcVel();
@@ -74,7 +74,7 @@ public abstract class Veiculo {
         this.qtdeDeRodas = qtdeDeRodas;
     }
 
-    public int getVelocMax(){
+    public long getVelocMax(){
         return this.velocMax;
     }
 

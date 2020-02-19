@@ -10,7 +10,7 @@ public final class Passeio extends Veiculo implements Calc {
     }
 
     @Override
-    public int getVelocMax() {
+    public long getVelocMax() {
         return calcular(super.getVelocMax());
     }
 
@@ -52,7 +52,7 @@ public final class Passeio extends Veiculo implements Calc {
     }
 
     @Override
-    public int calcular(int veloMax) {
+    public long calcular(long veloMax) {
         return veloMax * 1_000;
     }
 }

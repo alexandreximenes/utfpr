@@ -3,5 +3,5 @@
  */
 
 public interface Calc{
-    int calcular(int veloMax);
+    long calcular(long veloMax);
 }
