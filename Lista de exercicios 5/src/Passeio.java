@@ -10,17 +10,17 @@ public final class Passeio extends Veiculo implements Calc {
     }
 
     @Override
-    public long getVelocMax() {
+    public long calcVel() {
         return calcular(super.getVelocMax());
     }
 
-    @Override
-    public void setVelocMax(int velocMax) {
+
+    public void addVelocMax(long velocMax) {
         try {
             super.setVelocMax(velocMax);
         } catch (VelocException e) {
             System.out.println(e.getMessage());
-            this.setVelocMax(150);
+            this.addVelocMax(150);
             System.out.println("Velocidade padrão: "+this.getVelocMax());
         }
 
@@ -40,15 +40,10 @@ public final class Passeio extends Veiculo implements Calc {
     }
 
     @Override
-    public void calcVel() {
-
-    }
-
-    @Override
     public String toString() {
         return super.toString()
                 + "\nQtde de Passageiros: " + qtdeDePassageiros
-                + "\nVelocidade Maxima: " + this.getVelocMax() + " M/h";
+                + "\nVelocidade Maxima: " + this.calcVel() + " M/h";
     }
 
     @Override

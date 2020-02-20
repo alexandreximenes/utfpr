@@ -1,3 +1,6 @@
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
@@ -14,12 +17,12 @@ public class Teste {
 
     public static void main(String[] args) {
 
-        Passeio p = new Passeio("CCC-333", "VW", "GOL", "BRANCO", 4, 260, new Motor(2, 220), 5);
-        Carga c = new Carga("AAA-111", "VW", "Caminhao VW", "PRETO", 6, 280, new Motor(4, 400), 100, 1_000);
+        Passeio p = new Passeio("CCC-333", "VW", "GOL", "BRANCO", 4, 220, new Motor(2, 220), 5);
+        Carga c = new Carga("AAA-111", "VW", "Caminhao VW", "PRETO", 6, 180, new Motor(4, 400), 100, 1_000);
         try {
             bdVeiculos.save(p);
             bdVeiculos.save(c);
-        } catch (VeicExisException e) {
+        } catch (VeicExistException e) {
             e.printStackTrace();
         }
 
@@ -38,18 +41,23 @@ public class Teste {
                     cadastrarVeiculoDeCarga();
                     break;
                 case "3":
+                    DataEHoraAgora();
                     imprimirTodosVeiculosDePasseio();
                     break;
                 case "4":
+                    DataEHoraAgora();
                     imprimirTodosVeiculosDeCarga();
                     break;
                 case "5":
+                    DataEHoraAgora();
                     imprimirVeiculosDePasseioPelaPlaca();
                     break;
                 case "6":
+                    DataEHoraAgora();
                     imprimirVeiculosDeCargaPelaPlaca();
                     break;
                 case "7":
+                    DataEHoraAgora();
                     System.out.println("# Voce escolheu alterar veiculo de passeio pela placa");
                     System.out.println("Informe a placa: ");
                     String placa = leitura.entraDados();
@@ -58,6 +66,7 @@ public class Teste {
                     alterarDadosDoveiculoDePasseioPelaPlaca(passeio);
                     break;
                 case "8":
+                    DataEHoraAgora();
                     System.out.println("# Voce escolheu alterar veiculo de carga pela placa");
                     System.out.println("Informe a placa: ");
                     placa = leitura.entraDados();
@@ -69,6 +78,10 @@ public class Teste {
 
         } while (!escolha.equals("9"));
         System.out.println("Finalizou o programa");
+    }
+
+    private static void DataEHoraAgora() {
+        System.out.println("# Agora são: "+DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(LocalDateTime.now()));
     }
 
     private static void menuSistema() {
@@ -86,16 +99,29 @@ public class Teste {
 
     private static void alterarDadosDoveiculoDeCargaPelaPlaca(Carga carga) {
         Carga cargaRecuperado = bdVeiculos.buscaVeiculoCargaPelaPlaca(carga);
+        int indexVeiculoCarga = bdVeiculos.buscaIndexVeiculoCargaPelaPlaca(cargaRecuperado);
         if (nonNull(cargaRecuperado)) {
             System.out.println(cargaRecuperado);
-            System.out.println("Deseja alterar os dados do veiculo [s/n]?");
+            System.out.println("\n# Deseja alterar os dados do veiculo ?");
             String resposta = leitura.entraDados();
             if (resposta.equalsIgnoreCase("s") || resposta.equalsIgnoreCase("sim")) {
                 carga = alterarDadosDoveiculoDeCarga(cargaRecuperado);
-                bdVeiculos.save(carga.getId(), carga);
+                bdVeiculos.save(indexVeiculoCarga, carga);
             }
+
         } else {
-            System.out.println("Veiculo com a placa " + cargaRecuperado.getPlaca() + " não foi encontrado");
+            System.out.println("Veiculo com a placa (" + carga.getPlaca() + ") não foi encontrado");
+        }
+    }
+
+    private static void sobrescreverDadosDoveiculoDeCargaPelaPlaca(Carga carga) {
+        Carga cargaRecuperado = bdVeiculos.buscaVeiculoCargaPelaPlaca(carga);
+        int indexVeiculoCarga = bdVeiculos.buscaIndexVeiculoCargaPelaPlaca(cargaRecuperado);
+        if (nonNull(cargaRecuperado)) {
+            carga = alterarDadosDoveiculoDeCarga(cargaRecuperado);
+            bdVeiculos.save(indexVeiculoCarga, carga);
+        } else {
+            System.out.println("Veiculo com a placa (" + carga.getPlaca() + ") não foi encontrado");
         }
     }
 
@@ -132,7 +158,7 @@ public class Teste {
         System.out.println("Informe a velocidade maxima em Km/h: ");
         resposta = leitura.entraDados();
         int velMax = parseStringToInteger(resposta);
-        carga.setVelocMax(velMax);
+        carga.addVelocMax(velMax);
 
         System.out.println("Informe a quantidade de pistões do motor: ");
         resposta = leitura.entraDados();
@@ -147,20 +173,34 @@ public class Teste {
 
     private static void alterarDadosDoveiculoDePasseioPelaPlaca(Passeio passeio) {
         Passeio passeioRecuperado = bdVeiculos.buscaVeiculoPasseioPelaPlaca(passeio);
+        int indexVeiculoPasseio = bdVeiculos.buscaIndexVeiculoPasseioPelaPlaca(passeioRecuperado);
         if (nonNull(passeioRecuperado)) {
             System.out.println(passeioRecuperado);
-            System.out.println("Deseja alterar os dados do veiculo [s/n]?");
+            System.out.println("\n# Deseja alterar os dados do veiculo ?");
             String resposta = leitura.entraDados();
             if (resposta.equalsIgnoreCase("s") || resposta.equalsIgnoreCase("sim")) {
                 passeio = alterarDadosDoveiculoDePasseio(passeioRecuperado);
-                bdVeiculos.save(passeio.getId(), passeio);
+                bdVeiculos.save(indexVeiculoPasseio, passeio);
             }
         } else {
-            System.out.println("Veiculo com a placa " + passeio.getPlaca() + " não foi encontrado");
+            System.out.println("Veiculo com a placa (" + passeio.getPlaca() + ") não foi encontrado");
+        }
+    }
+
+    private static void sobrescreverDadosDoveiculoDePasseioPelaPlaca(Passeio passeio) {
+        Passeio passeioRecuperado = bdVeiculos.buscaVeiculoPasseioPelaPlaca(passeio);
+        int indexVeiculoPasseio = bdVeiculos.buscaIndexVeiculoPasseioPelaPlaca(passeioRecuperado);
+        if (nonNull(passeioRecuperado)) {
+            passeio = alterarDadosDoveiculoDePasseio(passeioRecuperado);
+            bdVeiculos.save(indexVeiculoPasseio, passeio);
+
+        } else {
+            System.out.println("Veiculo com a placa (" + passeio.getPlaca() + ") não foi encontrado");
         }
     }
 
     private static Passeio alterarDadosDoveiculoDePasseio(Passeio passeio) {
+
         System.out.println("Informe a marca: ");
         resposta = leitura.entraDados();
         passeio.setMarca(resposta);
@@ -186,7 +226,7 @@ public class Teste {
         System.out.println("Informe a velocidade maxima em Km/h: ");
         resposta = leitura.entraDados();
         int velMax = parseStringToInteger(resposta);
-        passeio.setVelocMax(velMax);
+        passeio.addVelocMax(velMax);
 
         System.out.println("Informe a quantidade de pistões do motor: ");
         resposta = leitura.entraDados();
@@ -237,89 +277,169 @@ public class Teste {
     }
 
     private static void cadastrarVeiculoDeCarga() {
+
         System.out.println("# Você escolheu cadastrar veiculo de carga");
 
-        System.out.println("Informe a placa: ");
-        String placa = leitura.entraDados();
+        do {
 
-        try {
+            System.out.println("Informe a placa: ");
+            String placa = leitura.entraDados();
+            Carga carga = new Carga();
+            carga.setPlaca(placa);
 
-            //Caso não existe veiculo cadastrado com essa placa
-            if (!bdVeiculos.existeVeiculoCargaComA(placa)) {
+            try {
 
-                Carga carga = new Carga();
-                carga = cadastrarOuAtualizarDados(carga, placa);
-                save(carga);
+                //Caso não existe veiculo cadastrado com essa placa
+                if (!bdVeiculos.existeVeiculoCargaComA(carga)) {
+                    carga = cadastrarOuAtualizarDados(carga);
+                    save(carga);
+
+                    System.out.println("Você quer sobrescrever o veiculo? [s/n]");
+                    resposta = leitura.entraDados();
+
+                }
+
+            } catch (VeicExistException e) {
+                System.out.println(e.getMessage());
+
+                System.out.println("Você quer sobrescrever o veiculo? [s/n]");
+                resposta = leitura.entraDados();
+                if (resposta.equalsIgnoreCase("s") || resposta.equalsIgnoreCase("sim")) {
+                    sobrescreverDadosDoveiculoDeCargaPelaPlaca(carga);
+                } else {
+                    carga = bdVeiculos.buscaVeiculoCargaPelaPlaca(carga);
+                    cadastrarVeiculoCargaDoMesmoTipo(carga);
+                }
             }
 
-        } catch (VeicExistException e) {
-            System.out.println(e.getMessage());
-
-            System.out.println("Você quer sobrescrever o veiculo? [s/n]");
-            resposta = leitura.entraDados();
-            if (resposta.equalsIgnoreCase("s") || resposta.equalsIgnoreCase("sim")) {
-                Passeio passeio = new Passeio();
-                passeio.setPlaca(placa);
-                alterarDadosDoveiculoDePasseioPelaPlaca(passeio);
-            } else {
-                cadastrarVeiculoDoMesmoTipo(placa);
-            }
-        }
+        } while (!resposta.equalsIgnoreCase("n") || resposta.equalsIgnoreCase("nao") || resposta.equalsIgnoreCase("não"));
     }
 
     private static void cadastrarVeiculoDePasseio() {
 
         System.out.println("# Você escolheu cadastrar veiculo de passeio");
 
-        System.out.println("Informe a placa: ");
-        String placa = leitura.entraDados();
+        do {
 
-        try {
+            System.out.println("Informe a placa: ");
+            String placa = leitura.entraDados();
+            Passeio passeio = new Passeio();
+            passeio.setPlaca(placa);
 
-            //Caso não existe veiculo cadastrado com essa placa
-            if (!bdVeiculos.existeVeiculoPasseioComA(placa)) {
+            try {
+                //Caso não existe veiculo cadastrado com essa placa
+                if (!bdVeiculos.existeVeiculoPasseioComA(passeio)) {
+                    passeio = cadastrarOuAtualizarDados(passeio);
+                    save(passeio);
 
-                Passeio passeio = new Passeio();
-                passeio = cadastrarOuAtualizarDados(passeio, placa);
-                save(passeio);
+                    System.out.println("Deseja cadastrar outro veiculo do mesmo tipo? [s/n]");
+                    resposta = leitura.entraDados();
+
+                }
+            } catch (VeicExistException e) {
+                System.out.println(e.getMessage());
+
+                System.out.println("Você quer sobrescrever o veiculo? [s/n]");
+                resposta = leitura.entraDados();
+
+                if (resposta.equalsIgnoreCase("s") || resposta.equalsIgnoreCase("sim")) {
+                    sobrescreverDadosDoveiculoDePasseioPelaPlaca(passeio);
+                } else {
+                    passeio = bdVeiculos.buscaVeiculoPasseioPelaPlaca(passeio);
+                    cadastrarVeiculoPasseioDoMesmoTipo(passeio);
+                }
             }
 
-        } catch (VeicExistException e) {
-            System.out.println(e.getMessage());
+        } while (!resposta.equalsIgnoreCase("n") || resposta.equalsIgnoreCase("nao") || resposta.equalsIgnoreCase("não"));
+    }
 
-            System.out.println("Você quer sobrescrever o veiculo? [s/n]");
-            resposta = leitura.entraDados();
-            if (resposta.equalsIgnoreCase("s") || resposta.equalsIgnoreCase("sim")) {
-                Passeio passeio = new Passeio();
-                passeio.setPlaca(placa);
-                alterarDadosDoveiculoDePasseioPelaPlaca(passeio);
-            } else {
-                cadastrarVeiculoDoMesmoTipo(placa);
-            }
+    private static void cadastrarVeiculoPasseioDoMesmoTipo(Passeio passeio) {
+
+        String resposta = "n";
+        System.out.println("Deseja cadastrar o veiculo do mesmo tipo? [s/n]");
+        resposta = leitura.entraDados();
+        if (resposta.equalsIgnoreCase("s") || resposta.equalsIgnoreCase("sim")) {
+
+            do {
+
+                Passeio passeioParaPesquisa = new Passeio();
+                System.out.println("Informe a placa: ");
+                String placaVeiculoMesmoTipo = leitura.entraDados();
+                passeioParaPesquisa.setPlaca(placaVeiculoMesmoTipo);
+
+                try {
+
+                    if (!bdVeiculos.existeVeiculoPasseioComA(passeioParaPesquisa)) {
+
+                        Passeio passeioDoMesmoTipo = new Passeio();
+                        passeioDoMesmoTipo.setPlaca(passeioParaPesquisa.getPlaca());
+                        passeioDoMesmoTipo.setMarca(passeio.getMarca());
+                        passeioDoMesmoTipo.setQtdeDePassageiros(passeio.getQtdeDePassageiros());
+                        passeioDoMesmoTipo.setMotor(new Motor(passeio.getMotor().getQtdPistoes(), passeio.getMotor().getPotencia()));
+                        passeioDoMesmoTipo.addVelocMax(passeio.getVelocMax());
+
+                        passeioDoMesmoTipo = cadastrarOuAtualizarDados(passeioDoMesmoTipo);
+                        save(passeioDoMesmoTipo);
+
+                        System.out.println("Deseja cadastrar outro veiculo do mesmo tipo? [s/n]");
+                        resposta = leitura.entraDados();
+                    }
+
+                } catch (VeicExistException e) {
+                    System.out.println("Veiculo com a placa (" + passeioParaPesquisa.getPlaca() + ") já foi cadastrado");
+                    resposta = "n";
+                }
+
+            } while (!resposta.equalsIgnoreCase("n") || resposta.equalsIgnoreCase("nao") || resposta.equalsIgnoreCase("não"));
+
         }
     }
 
-    private static void cadastrarVeiculoDoMesmoTipo(String placa) {
+    private static void cadastrarVeiculoCargaDoMesmoTipo(Carga carga) {
+
         String resposta = "n";
-        do {
-            System.out.println("Deseja cadastrar o veiculo do mesmo tipo? [s/n]");
-            resposta = leitura.entraDados();
-            if (resposta.equalsIgnoreCase("s") || resposta.equalsIgnoreCase("sim")) {
-                Passeio passeio = new Passeio();
-                passeio.setPlaca(placa);
-                passeio = bdVeiculos.buscaVeiculoPasseioPelaPlaca(passeio);
-                if (nonNull(passeio)) {
-                    passeio = cadastrarOuAtualizarDados(passeio, placa);
-                    save(passeio);
+        System.out.println("Deseja cadastrar o veiculo do mesmo tipo? [s/n]");
+        resposta = leitura.entraDados();
+        if (resposta.equalsIgnoreCase("s") || resposta.equalsIgnoreCase("sim")) {
+
+            do {
+
+                Carga cargaParaPesquisa = new Carga();
+                System.out.println("Informe a placa: ");
+                String placaVeiculoMesmoTipo = leitura.entraDados();
+                cargaParaPesquisa.setPlaca(placaVeiculoMesmoTipo);
+
+                try {
+
+                    if (!bdVeiculos.existeVeiculoCargaComA(cargaParaPesquisa)) {
+
+                        Carga cargaDoMesmoTipo = new Carga();
+                        cargaDoMesmoTipo.setPlaca(cargaParaPesquisa.getPlaca());
+                        cargaDoMesmoTipo.setMarca(carga.getMarca());
+                        cargaDoMesmoTipo.setQtdeDeRodas(carga.getQtdeDeRodas());
+                        cargaDoMesmoTipo.setMotor(new Motor(carga.getMotor().getQtdPistoes(), carga.getMotor().getPotencia()));
+                        cargaDoMesmoTipo.addVelocMax(carga.getVelocMax());
+
+                        cargaDoMesmoTipo = cadastrarOuAtualizarDados(cargaDoMesmoTipo);
+                        save(cargaDoMesmoTipo);
+
+                        System.out.println("Deseja cadastrar outro veiculo do mesmo tipo? [s/n]");
+                        resposta = leitura.entraDados();
+                    }
+
+                } catch (VeicExistException e) {
+                    System.out.println("Veiculo com a placa (" + cargaParaPesquisa.getPlaca() + ") já foi cadastrado");
+                    resposta = "n";
                 }
-            }
-        } while (!resposta.equalsIgnoreCase("n") || resposta.equalsIgnoreCase("nao") || resposta.equalsIgnoreCase("não"));
+
+            } while (!resposta.equalsIgnoreCase("n") || resposta.equalsIgnoreCase("nao") || resposta.equalsIgnoreCase("não"));
+        }
     }
 
     private static void save(Passeio passeio) {
         try {
             bdVeiculos.save(passeio);
-        } catch (VeicExisException e) {
+        } catch (VeicExistException e) {
             System.out.println("Veiculo placa: " + passeio.getPlaca() + " ja existe");
         }
     }
@@ -327,19 +447,24 @@ public class Teste {
     private static void save(Carga carga) {
         try {
             bdVeiculos.save(carga);
-        } catch (VeicExisException e) {
+        } catch (VeicExistException e) {
             System.out.println("Veiculo placa: " + carga.getPlaca() + " ja existe");
         }
     }
 
-    private static Passeio cadastrarOuAtualizarDados(Passeio passeio, String placa) {
+    private static Passeio cadastrarOuAtualizarDados(Passeio passeio) {
 
-        if (nonNull(placa))
-            passeio.setPlaca(placa);
+        if (isNull(passeio.getPlaca())) {
+            System.out.println("Informe a placa: ");
+            resposta = leitura.entraDados();
+            passeio.setPlaca(resposta);
+        }
 
-        System.out.println("Informe a marca: ");
-        resposta = leitura.entraDados();
-        passeio.setMarca(resposta);
+        if (isNull(passeio.getMarca())) {
+            System.out.println("Informe a marca: ");
+            resposta = leitura.entraDados();
+            passeio.setMarca(resposta);
+        }
 
         if (isNull(passeio.getModelo())) {
             System.out.println("Informe a modelo: ");
@@ -347,44 +472,57 @@ public class Teste {
             passeio.setModelo(resposta);
         }
 
-        System.out.println("Informe a cor: ");
-        resposta = leitura.entraDados();
-        passeio.setCor(resposta);
+        if (isNull(passeio.getCor())) {
+            System.out.println("Informe a cor: ");
+            resposta = leitura.entraDados();
+            passeio.setCor(resposta);
+        }
 
-        System.out.println("Informe a quantidade de passageiros: ");
-        resposta = leitura.entraDados();
-        int qtdPassageiros = parseStringToInteger(resposta);
-        passeio.setQtdeDePassageiros(qtdPassageiros);
+        if (passeio.getQtdeDePassageiros() == 0) {
+            System.out.println("Informe a quantidade de passageiros: ");
+            resposta = leitura.entraDados();
+            int qtdPassageiros = parseStringToInteger(resposta);
+            passeio.setQtdeDePassageiros(qtdPassageiros);
+        }
 
-        System.out.println("Informe a quantidade de rodas: ");
-        resposta = leitura.entraDados();
-        int qtdePneus = parseStringToInteger(resposta);
-        passeio.setQtdeDeRodas(qtdePneus);
+        if (passeio.getQtdeDeRodas() == 0) {
+            System.out.println("Informe a quantidade de rodas: ");
+            resposta = leitura.entraDados();
+            int qtdePneus = parseStringToInteger(resposta);
+            passeio.setQtdeDeRodas(qtdePneus);
+        }
+        if (passeio.getVelocMax() == 0) {
+            System.out.println("Informe a velocidade maxima em Km/h: ");
+            resposta = leitura.entraDados();
+            int velMax = parseStringToInteger(resposta);
+            passeio.addVelocMax(velMax);
+        }
 
-        System.out.println("Informe a velocidade maxima em Km/h: ");
-        resposta = leitura.entraDados();
-        int velMax = parseStringToInteger(resposta);
-        passeio.setVelocMax(velMax);
-
-        System.out.println("Informe a quantidade de pistões do motor: ");
-        resposta = leitura.entraDados();
-        int qtdPistoes = parseStringToInteger(resposta);
-        System.out.println("Informe a potência do motor: ");
-        resposta = leitura.entraDados();
-        int potencia = parseStringToInteger(resposta);
-        passeio.setMotor(new Motor(qtdPistoes, potencia));
-
+        if (isNull(passeio.getMotor())) {
+            System.out.println("Informe a quantidade de pistões do motor: ");
+            resposta = leitura.entraDados();
+            int qtdPistoes = parseStringToInteger(resposta);
+            System.out.println("Informe a potência do motor: ");
+            resposta = leitura.entraDados();
+            int potencia = parseStringToInteger(resposta);
+            passeio.setMotor(new Motor(qtdPistoes, potencia));
+        }
         return passeio;
     }
 
-    private static Carga cadastrarOuAtualizarDados(Carga carga, String placa) {
+    private static Carga cadastrarOuAtualizarDados(Carga carga) {
 
-        if (nonNull(placa))
-            carga.setPlaca(placa);
+        if (isNull(carga.getPlaca())) {
+            System.out.println("Informe a placa: ");
+            resposta = leitura.entraDados();
+            carga.setPlaca(resposta);
+        }
 
-        System.out.println("Informe a marca: ");
-        resposta = leitura.entraDados();
-        carga.setMarca(resposta);
+        if (isNull(carga.getMarca())) {
+            System.out.println("Informe a marca: ");
+            resposta = leitura.entraDados();
+            carga.setMarca(resposta);
+        }
 
         if (isNull(carga.getModelo())) {
             System.out.println("Informe a modelo: ");
@@ -392,38 +530,49 @@ public class Teste {
             carga.setModelo(resposta);
         }
 
-        System.out.println("Informe a cor: ");
-        resposta = leitura.entraDados();
-        carga.setCor(resposta);
+        if (isNull(carga.getCor())) {
+            System.out.println("Informe a cor: ");
+            resposta = leitura.entraDados();
+            carga.setCor(resposta);
+        }
 
-        System.out.println("Informe a tara: ");
-        resposta = leitura.entraDados();
-        int tara = parseStringToInteger(resposta);
-        carga.setTara(tara);
+        if (carga.getTara() == 0) {
+            System.out.println("Informe a tara: ");
+            resposta = leitura.entraDados();
+            int tara = parseStringToInteger(resposta);
+            carga.setTara(tara);
+        }
 
-        System.out.println("Informe a carga maxima: ");
-        resposta = leitura.entraDados();
-        int cargaMax = parseStringToInteger(resposta);
-        carga.setCargaMax(cargaMax);
+        if (carga.getCargaMax() == 0) {
+            System.out.println("Informe a carga maxima: ");
+            resposta = leitura.entraDados();
+            int cargaMax = parseStringToInteger(resposta);
+            carga.setCargaMax(cargaMax);
+        }
 
-        System.out.println("Informe a quantidade de rodas: ");
-        resposta = leitura.entraDados();
-        int qtdePneus = parseStringToInteger(resposta);
-        carga.setQtdeDeRodas(qtdePneus);
+        if (carga.getQtdeDeRodas() == 0) {
+            System.out.println("Informe a quantidade de rodas: ");
+            resposta = leitura.entraDados();
+            int qtdePneus = parseStringToInteger(resposta);
+            carga.setQtdeDeRodas(qtdePneus);
+        }
 
-        System.out.println("Informe a velocidade maxima em Km/h: ");
-        resposta = leitura.entraDados();
-        int velMax = parseStringToInteger(resposta);
-        carga.setVelocMax(velMax);
+        if (carga.getVelocMax() == 0) {
+            System.out.println("Informe a velocidade maxima em Km/h: ");
+            resposta = leitura.entraDados();
+            int velMax = parseStringToInteger(resposta);
+            carga.addVelocMax(velMax);
+        }
 
-        System.out.println("Informe a quantidade de pistões do motor: ");
-        resposta = leitura.entraDados();
-        int qtdPistoes = parseStringToInteger(resposta);
-        System.out.println("Informe a potência do motor: ");
-        resposta = leitura.entraDados();
-        int potencia = parseStringToInteger(resposta);
-        carga.setMotor(new Motor(qtdPistoes, potencia));
-
+        if (isNull(carga.getMotor())) {
+            System.out.println("Informe a quantidade de pistões do motor: ");
+            resposta = leitura.entraDados();
+            int qtdPistoes = parseStringToInteger(resposta);
+            System.out.println("Informe a potência do motor: ");
+            resposta = leitura.entraDados();
+            int potencia = parseStringToInteger(resposta);
+            carga.setMotor(new Motor(qtdPistoes, potencia));
+        }
         return carga;
     }
 

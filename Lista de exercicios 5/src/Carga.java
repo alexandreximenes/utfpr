@@ -33,12 +33,7 @@ public final class Carga extends Veiculo implements Calc{
     }
 
     @Override
-    public void calcVel() {
-
-    }
-
-    @Override
-    public long getVelocMax() {
+    public long calcVel() {
         return calcular(super.getVelocMax());
     }
 
@@ -47,15 +42,14 @@ public final class Carga extends Veiculo implements Calc{
         return super.toString() +
                 "\nTara: " + tara +
                 "\nCarga Maxima: "+cargaMax +
-                "\nVelocidade Maxima: " + this.getVelocMax();
+                "\nVelocidade Maxima: " + this.calcVel() + " Cm/h";
     }
-    @Override
-    public void setVelocMax(int velocMax) {
+    public void addVelocMax(long velocMax) {
         try {
             super.setVelocMax(velocMax);
         } catch (VelocException e) {
             System.out.println(e.getMessage());
-            this.setVelocMax(120);
+            this.addVelocMax(120);
             System.out.println("Velocidade padrão: "+this.getVelocMax());
         }
 

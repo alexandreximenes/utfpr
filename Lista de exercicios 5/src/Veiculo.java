@@ -4,7 +4,6 @@
 
 public abstract class Veiculo {
 
-    private Integer id;
     private String placa;
     private String marca;
     private String modelo;
@@ -13,7 +12,7 @@ public abstract class Veiculo {
     private long velocMax;
     private Motor motor;
 
-    public abstract void calcVel();
+    public abstract long calcVel();
 
     public Veiculo(){}
     public Veiculo(String placa, String marca, String modelo, String cor, int qtdeDeRodas, int velocMax, Motor motor) {
@@ -24,14 +23,6 @@ public abstract class Veiculo {
         this.qtdeDeRodas = qtdeDeRodas;
         this.velocMax = velocMax;
         this.motor = motor;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getPlaca() {
@@ -78,7 +69,7 @@ public abstract class Veiculo {
         return this.velocMax;
     }
 
-    public void setVelocMax(int velocMax) throws VelocException{
+    public void setVelocMax(long velocMax) throws VelocException{
         if(velocMax < 100 || velocMax > 250){
             throw new VelocException("A velocidade máxima está fora dos limites brasileiros");
         }
