@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Cadastro de clientes</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <div>
+                 <h:inputHidden value="#{clienteJsf.codigo}"></h:inputHidden>
+                <p>Nome:</p> 
+                <p> 
+                   
+                    <h:inputText value="#{clienteJsf.nome}"></h:inputText>
+                </p>
+                
+                <p>
+                    <h:outputLabel for="cidade">Cidade: </h:outputLabel>
+                    <h:selectOneMenu value="#{clienteJsf.cidade.codigo}">
+                        <f:selectItems  var="cidade" 
+                                        itemValue="#{cidade.codigo}" 
+                                        itemLabel="#{cidade.nome}" 
+                                        value="#{clienteJsf.cidades}" />
+                    </h:selectOneMenu>
+                </p>
+                <h:commandButton value="Salvar" action="#{(clienteJsf.salvar(clienteJsf.codigo))}"/>
+           
+            </div>
+        </h:form>
+        
+         <h:form>
+            <div>
+                <h:dataTable value="#{clienteJsf.clientes}" var="cliente">
+                   
+                    <h:column>
+                        <f:facet name="header"> 
+                            <h:outputText value="Codigo" /> 
+                        </f:facet> 
+                        <h:outputLabel value="#{cliente.codigo}" />
+                    </h:column>
+                    
+                    <h:column>
+                        <f:facet name="header"> 
+                            <h:outputText value="Nome" /> 
+                        </f:facet> 
+                        <h:outputLabel value="#{cliente.nome}" />
+                    </h:column>
+                            
+                    <h:column>
+                        <f:facet name="header"> 
+                            <h:outputText value="Cidade" /> 
+                        </f:facet> 
+                        <h:outputLabel value="#{cliente.cidade.nome}" />
+                    </h:column>
+                    
+                     <h:column>
+                         <h:commandButton value="Editar" action="#{(clienteJsf.montaEditar(cliente.codigo))}"/>
+                    </h:column>
+                    
+                     <h:column>
+                         <h:commandButton value="Remover" action="#{(clienteJsf.remover(cliente.codigo))}"/>
+                    </h:column>
+
+                </h:dataTable>
+            </div>
+        </h:form>
+    </h:body>
+</html>
+

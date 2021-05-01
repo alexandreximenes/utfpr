@@ -1,0 +1,51 @@
+<resources>
+    <!--tela inicial-->
+    <string name="titulo_tela">Escolha uma opção</string>
+    <string name="titulo_med">Medicamentos</string>
+    <string name="titulo_alim">Alimentos</string>
+
+    <!--usuario-->
+    <string name="nome_usuario">Nome</string>
+    <string name="nome_usuario_hint">Informe seu nome</string>
+    <string name="sobrenome_usuario">Sobrenome</string>
+    <string name="sobrenome_usuario_hint">Informe seu sobrenome</string>
+    <string name="data_nascimento_usuario">Data de nascimento</string>
+    <string name="data_nascimento_usuario_hint">Informe Sua data nascimento</string>
+    <string name="sexo_usuario">Genero</string>
+    <string name="sexo_usuario_hint">Informe seu sexo</string>
+    <string name="sexo_masculino">Masculino</string>
+    <string name="sexo_feminino">Feminino</string>
+    <string name="sexo_nao_informado">Não quero informar</string>
+    <string name="telefone_usuario">Telefone</string>
+    <string name="telefone_usuario_hint">Informe seu telefone</string>
+    <string name="email_usuario">E-mail</string>
+    <string name="email_usuario_hint">Informe seu e-mail</string>
+
+    <!--Medicamentos-->
+    <string name="app_name">ControleColesterol</string>
+    <string name="medicamentos">Medicamentos</string>
+    <string name="nome_med">Nome</string>
+    <string name="nome_med_hint">Informe o nome do medicamento</string>
+    <string name="dias">Por quantos dias</string>
+    <string name="dias_hint">Por quantos dias você deve tomar o remedio</string>
+    <string name="intervalo">Intervalo de horas</string>
+    <string name="intervalo_hint">De quantas em quantas horas você deve tomar o remedio</string>
+    <string name="tratamento">Tratamento</string>
+    <string name="tratamento_hint">Informe qual é o tratamento indicado pelo medico</string>
+    <string name="doenca">Doença do tratamento</string>
+    <string name="botao_limpar">Limpar</string>
+    <string name="botao_salvar">Salvar</string>
+
+    <!--Alimentos-->
+    <string name="alimentos">Alimentos</string>
+    <string name="nome_alim">Nome</string>
+    <string name="nome__alim_hint">Informe seu nome do alimento indicado pelo médico</string>
+    <string name="alimento_bom">bom</string>
+    <string name="alimento_ruim">ruim</string>
+    <string name="mensagem_salvar">Salvo com sucesso</string>
+    <string name="mensagem_limpar">Campos limpos</string>
+    <string name="colesterol">Colesterol</string>
+    <string name="outras">Outras</string>
+    <string name="infomar_meus_dados">Infomar meus dados</string>
+
+</resources>

@@ -1,0 +1,36 @@
+
+J
+java:S1659"-Declare "edTratamentoMed" on a separate line.(ıÆ8ß«Š±ş.
+v
+java:S1450"YRemove the "tratamento" field and declare it as a local variable in the relevant methods.(ı’ƒŞ8ß«Š±ş.
+E
+java:S1659"(Declare "tratamento" on a separate line.(ı’ƒŞ8ß«Š±ş.
+H
+java:S1172P"+Remove this unused method parameter "view".(ÚÑ•ö8ŠÄ‰±ş.
+I
+java:S1659",Declare "edIntervaloMed" on a separate line.(ıÆ8ß«Š±ş.
+V	java:S110"<This class has 9 parents which is greater than 5 authorized.(ş Şşÿÿÿÿ
+G
+java:S11720"+Remove this unused method parameter "view".(±…¦q8ŠÄ‰±ş.
+V
+java:S4973F"9Use the "equals" method if value comparison was intended.(íÀºú8ŠÄ‰±ş.
+u
+java:S1450"XRemove the "intervalo" field and declare it as a local variable in the relevant methods.(ı’ƒŞ8ß«Š±ş.
+p
+java:S1450"SRemove the "dias" field and declare it as a local variable in the relevant methods.(ı’ƒŞ8ß«Š±ş.
+D
+java:S1659"'Declare "intervalo" on a separate line.(ı’ƒŞ8ß«Š±ş.
+p
+java:S1450"SRemove the "nome" field and declare it as a local variable in the relevant methods.(ı’ƒŞ8ß«Š±ş.
+?
+java:S1659""Declare "dias" on a separate line.(ı’ƒŞ8ß«Š±ş.
+V
+java:S49737"9Use the "equals" method if value comparison was intended.(¹¶¡“8ŠÄ‰±ş.
+D
+java:S1659"'Declare "edDiasMed" on a separate line.(ıÆ8ß«Š±ş.
+[
+java:S4973<"9Use the "equals" method if value comparison was intended.(ÈÂ‰ıÿÿÿÿ8ŠÄ‰±ş.
+V
+java:S4973A"9Use the "equals" method if value comparison was intended.(¾Œ¼8ŠÄ‰±ş.
+M
+java:S1172""+Remove this unused method parameter "view".(½¦¼üÿÿÿÿ8ŠÄ‰±ş.

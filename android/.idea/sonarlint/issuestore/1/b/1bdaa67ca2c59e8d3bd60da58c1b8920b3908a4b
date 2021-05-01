@@ -1,0 +1,37 @@
+
+H
+java:S1172'"+Remove this unused method parameter "view".(‹öù¢8 Ó›²ş.
+V
+java:S1659"4Declare "rbSexoNaoInformadoUser" on a separate line.(ÖšÊıÿÿÿÿ8¦¦¥¬ş.
+V
+java:S4973C"9Use the "equals" method if value comparison was intended.(¿ èã8–á×¬ş.
+V
+java:S4973>"9Use the "equals" method if value comparison was intended.(€÷Ó8’­Ö¬ş.
+I
+java:S1659",Declare "dataNascimento" on a separate line.(®·Ú–8™÷Ì¬ş.
+V
+java:S49734"9Use the "equals" method if value comparison was intended.(Ë×Ú”8Ì§Ó¬ş.
+@
+java:S1659"#Declare "email" on a separate line.(®·Ú–8™÷Ì¬ş.
+>	java:S131I""Add a default case to this switch.(†áœô8ŞÜ¬ş.
+K
+java:S1659")Declare "edEmailUser" on a separate line.(İıÉÀøÿÿÿÿ8•Ó£¬ş.
+V
+java:S49739"9Use the "equals" method if value comparison was intended.(´“‰8áÔ¬ş.
+V
+java:S4973/"9Use the "equals" method if value comparison was intended.(¹¶¡“8™÷Ì¬ş.
+C
+java:S1659"&Declare "telefone" on a separate line.(®·Ú–8™÷Ì¬ş.
+H
+java:S1172\"+Remove this unused method parameter "view".(€ß§Ï8ª¦²ş.
+T
+java:S1659"2Declare "edDataNascimentoUser" on a separate line.(İıÉÀøÿÿÿÿ8•Ó£¬ş.
+O
+java:S1659"-Declare "edSobrenomeUser" on a separate line.(İıÉÀøÿÿÿÿ8•Ó£¬ş.
+S
+java:S1659"1Declare "rbSexoMasculinoUser" on a separate line.(ÖšÊıÿÿÿÿ8¦¦¥¬ş.
+D
+java:S1659"'Declare "sobrenome" on a separate line.(®·Ú–8™÷Ì¬ş.
+Q	java:S110"<This class has 9 parents which is greater than 5 authorized.(¿İó‰
+N
+java:S1659",Declare "edTelefoneUser" on a separate line.(İıÉÀøÿÿÿÿ8•Ó£¬ş.

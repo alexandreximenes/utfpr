@@ -1,0 +1,14 @@
+{
+  "productionMode": false,
+  "useDeprecatedV14Bootstrapping": false,
+  "eagerServerLoad": false,
+  "npmFolder": "/home/rivolli/NetBeansProjects/Vaadin/webapp",
+  "generatedFolder": "/home/rivolli/NetBeansProjects/Vaadin/webapp/target/frontend",
+  "frontendFolder": "/home/rivolli/NetBeansProjects/Vaadin/webapp/frontend",
+  "connect.javaSourceFolder": "/home/rivolli/NetBeansProjects/Vaadin/webapp/src/main/java",
+  "connect.applicationProperties": "/home/rivolli/NetBeansProjects/Vaadin/webapp/src/main/resources/application.properties",
+  "connect.openApiFile": "/home/rivolli/NetBeansProjects/Vaadin/webapp/target/generated-resources/openapi.json",
+  "connect.generated": "/home/rivolli/NetBeansProjects/Vaadin/webapp/frontend/generated",
+  "pnpm.enable": true,
+  "require.home.node": false
+}

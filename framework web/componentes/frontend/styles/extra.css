@@ -1,0 +1,9 @@
+.bordas-internas {
+   border: 1px dashed blue;
+   margin: 15px;
+}
+
+.bordas-internas * {
+    border: 1px solid red;
+}
+

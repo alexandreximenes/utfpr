@@ -1,0 +1,16 @@
+
+M
+java:S1172"+Remove this unused method parameter "view".(‰·âƒüÿÿÿÿ8’ãó®ş.
+H
+java:S1659",Declare "cbAlimentoRuim" on a separate line.(Ø÷K8»ú‹­ş.
+V	java:S110"<This class has 9 parents which is greater than 5 authorized.(éĞ±¥ÿÿÿÿÿ
+S
+java:S1068"1Remove this unused "cbSelecionado" private field.(¶Øıİşÿÿÿÿ8äûš­ş.
+p
+java:S1450"SRemove the "nome" field and declare it as a local variable in the relevant methods.(«Ÿ¡ù8õÿò®ş.
+V
+java:S4973."9Use the "equals" method if value comparison was intended.(¹¶¡“8õÿò®ş.
+H
+java:S1172*"+Remove this unused method parameter "view".(•œÉ8õÿò®ş.
+~
+java:S1450"\Remove the "cbSelecionado" field and declare it as a local variable in the relevant methods.(¶Øıİşÿÿÿÿ8õÿò®ş.
